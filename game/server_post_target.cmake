@@ -1,0 +1,27 @@
+include("dll")
+add_dependencies(server ${SHARED_DEPENDENCIES} ${SERVER_DEPENDENCIES})
+
+target_link_libraries(server ${SHARED_LIBS} ${SERVER_LIBS})
+target_compile_definitions(server PUBLIC ${SHARED_DEFINITIONS} ${SERVER_DEFINITIONS})
+target_include_directories(server PUBLIC ${SHARED_INCLUDE_DIRS} ${SERVER_INCLUDE_DIRS})
+target_precompile_headers(server PRIVATE "${SRC_DIR}/game/server/cbase.h")
+if(ANDROID)
+	set_target_properties(server PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${GAME_DIR}/bin")
+elseif(WIN32)
+	set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${GAME_DIR}/${GAME_NAME}/bin")
+else()
+	set_target_properties(server PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${GAME_DIR}/${GAME_NAME}/bin")
+endif()
+
+if(NOT ANDROID)
+	set_target_properties(server PROPERTIES PREFIX "")
+endif()
+set_target_properties(server PROPERTIES OUTPUT_NAME server)
+
+target_link_libraries(server steam_api)
+
+if(LINUX OR ANDROID)
+	install(TARGETS server LIBRARY DESTINATION "bin")
+else()
+	install(TARGETS server RUNTIME DESTINATION "bin")
+endif()

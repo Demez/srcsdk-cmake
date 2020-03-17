@@ -1,0 +1,5 @@
+ucm_add_dirs("${SRC_DIR}/game/client/ShaderEditor" TO CLIENT_SOURCES NO_HEADERS RECURSIVE)
+
+list(APPEND CLIENT_INCLUDE_DIRS "${SRC_DIR}/game/client/ShaderEditor")
+
+list(APPEND SHARED_DEFINITIONS SHADEREDITOR)
